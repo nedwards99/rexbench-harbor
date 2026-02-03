@@ -7,6 +7,9 @@ ENV PATH="/opt/miniconda3/bin:${PATH}" \
     LANG=C.UTF-8 \
     DEBIAN_FRONTEND=noninteractive
 
+ARG MINICONDA_VERSION=py38_4.10.3
+ARG MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh
+
 # Set work directory
 WORKDIR /stage/
 
@@ -15,22 +18,28 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     wget \
-    && wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh \
-    && echo "636b209b00b6673471f846581829d4b96b9c3378679925a59a584257c3fef5a3  miniconda.sh" | sha256sum --check \
-    && bash miniconda.sh -b -p /opt/miniconda3 \
-    && rm miniconda.sh \
+    ca-certificates \
+    unzip \
+    && wget -q ${MINICONDA_URL} -O /tmp/miniconda.sh \
+    && bash /tmp/miniconda.sh -b -p /opt/miniconda3 \
+    && rm /tmp/miniconda.sh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy environment.yml for Conda environment creation
-COPY environment.yml /stage/environment.yml
+ENV PATH="/opt/miniconda3/bin:$PATH"
 
-# Create the conda environment and activate it
-RUN conda env create -f environment.yml && \
-    echo "source activate othello" > ~/.bashrc
+WORKDIR /stage/
+COPY base_repo/ /stage/
 
-# Set the default shell to bash and activate Conda environment
-SHELL ["conda", "run", "-n", "othello", "/bin/bash", "-c"]
+# Create env, clean conda cache, clean pip cache
+RUN conda env create --prefix /stage/env --file=/stage/environment.yml && \
+    conda clean -afy && \
+    rm -rf /root/.cache/pip
+
+RUN /opt/miniconda3/bin/pip install --no-cache-dir gdown
 
 # Create required directories
 RUN mkdir -p /stage/ckpts/battery_othello
+
+# Default shell
+ENV PATH="/stage/env/bin:$PATH"

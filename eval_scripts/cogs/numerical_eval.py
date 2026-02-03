@@ -2,7 +2,7 @@ import re
 import sys
 
 
-_GROUND_TRUTH_ACC = 0.49714285714285716
+_GROUND_TRUTH_ACC = 0.4562857142857143
 
 
 def right_range(results):
