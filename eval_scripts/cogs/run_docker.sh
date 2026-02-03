@@ -4,8 +4,8 @@ set -euo pipefail
 EVAL_REPO="${1:-/root/eval_repo}"
 RESULTS_PATH="${EVAL_REPO}/eval_results.txt"
 
-source /opt/miniconda3/etc/profile.d/conda.sh
-conda activate /stage/env
+# source /opt/miniconda3/etc/profile.d/conda.sh
+# conda activate /stage/env
 
 cd "$EVAL_REPO"
 if [ ! -s run_final.sh ]; then
