@@ -3,15 +3,26 @@ import re
 import pandas as pd
 import sys
 
+# _GROUND_TRUTH_LAYER_ACCS = {
+#     "layer_1": 0.88155,
+#     "layer_2": 0.91817,
+#     "layer_3": 0.94222,
+#     "layer_4": 0.95540,
+#     "layer_5": 0.96481,
+#     "layer_6": 0.97067,
+#     "layer_7": 0.97152,
+#     "layer_8": 0.96880
+# }
+
 _GROUND_TRUTH_LAYER_ACCS = {
-    "layer_1": 0.88155,
-    "layer_2": 0.91817,
-    "layer_3": 0.94222,
-    "layer_4": 0.95540,
-    "layer_5": 0.96481,
-    "layer_6": 0.97067,
-    "layer_7": 0.97152,
-    "layer_8": 0.96880
+    "layer_1": 0.88211,
+    "layer_2": 0.91916,
+    "layer_3": 0.94318,
+    "layer_4": 0.95633,
+    "layer_5": 0.96581,
+    "layer_6": 0.97177,
+    "layer_7": 0.97266,
+    "layer_8": 0.96966
 }
 
 def validate_layer_accs(results_path):
