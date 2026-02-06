@@ -50,5 +50,4 @@ cp -r "$DATA_DIR" /stage/data/othello_championship
 cd "$EVAL_REPO"
 
 # Run experiment
-bash -e produce_probes.sh | tee "$RESULTS_PATH"
-exit "${PIPESTATUS[0]}"
+bash -e produce_probes.sh
