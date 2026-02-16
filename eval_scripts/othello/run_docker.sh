@@ -4,6 +4,10 @@ set -euo pipefail
 EVAL_REPO="${1:-/stage}"
 RESULTS_PATH="${EVAL_REPO}/"
 
+cd "$EVAL_REPO"
+source /opt/miniconda3/etc/profile.d/conda.sh
+conda activate /stage/env 
+
 # Download private assets into /root/private
 mkdir -p /root/private/models /root/private/data
 

@@ -34,4 +34,6 @@ def main(results_path):
 
 if __name__ == "__main__":
     results_path = sys.argv[1]
-    print(main(results_path))
+    result = main(results_path)
+    print(result)
+    sys.exit(0 if result.get("right_range", False) else 1)

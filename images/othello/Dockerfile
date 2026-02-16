@@ -7,8 +7,9 @@ ENV PATH="/opt/miniconda3/bin:${PATH}" \
     LANG=C.UTF-8 \
     DEBIAN_FRONTEND=noninteractive
 
-ARG MINICONDA_VERSION=py38_4.10.3
+ARG MINICONDA_VERSION=py312_24.11.1-0
 ARG MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh
+
 
 # Set work directory
 WORKDIR /stage/
@@ -40,6 +41,3 @@ RUN /opt/miniconda3/bin/pip install --no-cache-dir gdown
 
 # Create required directories
 RUN mkdir -p /stage/ckpts/battery_othello
-
-# Default shell
-ENV PATH="/stage/env/bin:$PATH"

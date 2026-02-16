@@ -39,5 +39,3 @@ COPY base_repo/ /stage/
 
 RUN conda env create --prefix /stage/env --file=/stage/environment.yml && \
     conda clean -afy
-
-ENV PATH="/stage/env/bin:$PATH"

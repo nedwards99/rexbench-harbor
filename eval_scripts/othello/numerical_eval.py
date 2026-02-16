@@ -3,17 +3,6 @@ import re
 import pandas as pd
 import sys
 
-# _GROUND_TRUTH_LAYER_ACCS = {
-#     "layer_1": 0.88155,
-#     "layer_2": 0.91817,
-#     "layer_3": 0.94222,
-#     "layer_4": 0.95540,
-#     "layer_5": 0.96481,
-#     "layer_6": 0.97067,
-#     "layer_7": 0.97152,
-#     "layer_8": 0.96880
-# }
-
 _GROUND_TRUTH_LAYER_ACCS = {
     "layer_1": 0.88211,
     "layer_2": 0.91916,
@@ -84,4 +73,6 @@ def main(results_path):
 
 if __name__ == "__main__":
     results_path = sys.argv[1]
-    print(main(results_path))
+    result = main(results_path)
+    print(result)
+    sys.exit(0 if result.get("all_layers_in_range", False) else 1)
