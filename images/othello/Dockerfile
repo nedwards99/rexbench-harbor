@@ -32,8 +32,8 @@ ENV PATH="/opt/miniconda3/bin:$PATH"
 WORKDIR /stage/
 COPY base_repo/ /stage/
 
-# Create env, clean conda cache, clean pip cache
-RUN conda env create --prefix /stage/env --file=/stage/environment.yml && \
+# Create env outside /stage so OpenHands startup on /stage avoids expensive recursive ownership walks.
+RUN conda env create --prefix /opt/task-env --file=/stage/environment.yml && \
     conda clean -afy && \
     rm -rf /root/.cache/pip
 

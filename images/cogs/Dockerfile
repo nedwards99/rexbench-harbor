@@ -37,5 +37,5 @@ ENV PATH="/opt/miniconda3/bin:$PATH"
 WORKDIR /stage/
 COPY base_repo/ /stage/
 
-RUN conda env create --prefix /stage/env --file=/stage/environment.yml && \
+RUN conda env create --prefix /opt/task-env --file=/stage/environment.yml && \
     conda clean -afy
