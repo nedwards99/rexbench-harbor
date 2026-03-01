@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+REPO_ROOT=$(cd "${SCRIPT_DIR}/.." && pwd)
+
 REPO_NAME=$1
 TASK_NAME=$2
 RUN=$3
@@ -15,23 +18,18 @@ export LLM_INPUT_TOKEN_COST="0.000003"
 export LLM_OUTPUT_TOKEN_COST="0.000015"
 export AGENT_NAME="openhands_claude_4.5_sonnet"
 
-OPENHANDS_PATH=/home/ubuntu/OpenHands
-REPOS_ROOT=/home/ubuntu/rexbench-repos
-PATCHES_ROOT=/home/ubuntu/patches/${AGENT_NAME}
-
-if [ ! -d "$OPENHANDS_PATH" ]; then
-  echo "Error: OPENHANDS_PATH does not exist: $OPENHANDS_PATH"
-  exit 1
-fi
+TASKS_SOURCE_ROOT="${REPO_ROOT}/tasks"
+REPOS_ROOT="${REPO_ROOT}/repos"
+PATCHES_ROOT="${REPO_ROOT}/patches/${AGENT_NAME}"
 
 mkdir -p "$REPOS_ROOT"
 
 echo "Creating PATCHES DIR $PATCHES_ROOT..."
-mkdir -p $PATCHES_ROOT
+mkdir -p "$PATCHES_ROOT"
 
-export REPO_PATH=${REPOS_ROOT}/${REPO_NAME}
+export REPO_PATH="${REPOS_ROOT}/${REPO_NAME}"
 
-mkdir -p ${PATCHES_ROOT}/${TASK_NAME}
+mkdir -p "${PATCHES_ROOT}/${TASK_NAME}"
 
 export WORKSPACE_BASE=$REPO_PATH
 
@@ -71,7 +69,7 @@ do
 
 cd $REPOS_ROOT
 if [ ! -d "$REPOS_ROOT/${REPO_NAME}" ]; then
-  cp -r /home/ubuntu/tasks/${REPO_NAME} $REPO_PATH
+  cp -r "${TASKS_SOURCE_ROOT}/${REPO_NAME}" "$REPO_PATH"
 fi
 
 
@@ -79,7 +77,6 @@ cd $REPO_PATH
 
 mkdir -p ${REPO_PATH}/trajectories/
 
-cd $OPENHANDS_PATH
 echo "Running agent..."
 docker run -it --rm \
  --gpus all \
@@ -129,6 +126,6 @@ sed -i "s|/workspace/|./|g" ${PATCHES_ROOT}/${TASK_NAME}/${level}/${AGENT_NAME}_
 cd $CURR_DIR
 
 echo "Deleting ${REPO_PATH}"
-rm -rf $REPO_PATH
+sudo rm -rf $REPO_PATH
 
 done

@@ -61,7 +61,11 @@ def get_task_result(task: str, hint_type: str, run_number: int, agent_name: str)
             else:
                 result = {"error": "No text files found"}
         elif task == "othello":
-            result = module.main(str(run_dir))
+            ckpts_dir = run_dir / "ckpts"
+            if ckpts_dir.exists():
+                result = module.main(str(ckpts_dir))
+            else:
+                result = {"error": f"Missing ckpts directory: {ckpts_dir}"}
         else:
             return False, {"error": f"Unsupported task {task}"}
         

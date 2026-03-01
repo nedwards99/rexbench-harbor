@@ -3,3 +3,5 @@ patches/
 evaluation/
 evaluation_results/
 .venv/
+__pycache__/
+*.pyc

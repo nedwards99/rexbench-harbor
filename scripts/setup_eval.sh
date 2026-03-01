@@ -40,8 +40,24 @@ else
   echo "Patches directory already exists at $PATCHES_DIR; skipping unzip."
 fi
 
-if [ ! -d "$VENV_DIR" ]; then
+for task in cogs othello; do
+  SOURCE_REPO="${TASKS_DIR}/${task}"
+  IMAGE_REPO="${REPO_ROOT}/images/${task}/base_repo"
+
+  if [ ! -d "$SOURCE_REPO" ]; then
+    echo "Error: missing task repo for ${task}: $SOURCE_REPO"
+    exit 1
+  fi
+
+  echo "Syncing ${SOURCE_REPO} to ${IMAGE_REPO}..."
+  rm -rf "$IMAGE_REPO"
+  mkdir -p "$IMAGE_REPO"
+  cp -R "${SOURCE_REPO}/." "$IMAGE_REPO"/
+done
+
+if [ ! -f "$VENV_DIR/bin/activate" ]; then
   echo "Creating virtual environment at $VENV_DIR..."
+  rm -rf "$VENV_DIR"
   python3 -m venv "$VENV_DIR"
 fi
 
