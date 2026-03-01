@@ -242,5 +242,5 @@ bash scripts/run_eval.sh openhands_claude_4.5_sonnet results
 ```
 
 ## 👋 Contact
-- Nicholas Edwards (original RExBench author and maintainer of this repository), GitHub: `@nedwards99`
+- [Nicholas Edwards](https://github.com/nedwards99), original RExBench author and maintainer of this repository
 - Team RExBench (rexbench@googlegroups.com)
