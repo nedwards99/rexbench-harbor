@@ -7,10 +7,6 @@ ENV PATH="/opt/miniconda3/bin:${PATH}" \
     LANG=C.UTF-8 \
     DEBIAN_FRONTEND=noninteractive
 
-ARG MINICONDA_VERSION=py312_24.11.1-0
-ARG MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh
-
-
 # Set work directory
 WORKDIR /stage/
 
@@ -21,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
     unzip \
-    && wget -q ${MINICONDA_URL} -O /tmp/miniconda.sh \
+    && wget --tries=3 --timeout=15 -v https://repo.anaconda.com/miniconda/Miniconda3-py312_24.11.1-0-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && bash /tmp/miniconda.sh -b -p /opt/miniconda3 \
     && rm /tmp/miniconda.sh \
     && apt-get clean \

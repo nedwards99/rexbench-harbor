@@ -1,17 +1,10 @@
 # Specify base image from NVIDIA's CUDA container repository
-ARG CUDA=11.8.0
-ARG DIST=ubuntu20.04
-ARG TARGET=cudnn8-devel
-FROM nvidia/cuda:${CUDA}-${TARGET}-${DIST}
-
-
-# Avoids prompts during package installations
-ARG DEBIAN_FRONTEND="noninteractive"
-ARG MINICONDA_VERSION=py312_24.1.2-0
-ARG MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
 
 # Specify which NVIDIA features container can use
 ENV NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Specify paths for Hugging Face, Conda, CUDA
 ENV HF_HOME=/opt/hf_cache
@@ -26,7 +19,7 @@ RUN apt-get update && apt-get install -y \
    curl \
    wget \
    ca-certificates && \
-   wget -q ${MINICONDA_URL} -O /tmp/miniconda.sh && \
+   wget --tries=3 --timeout=15 -v https://repo.anaconda.com/miniconda/Miniconda3-py312_24.1.2-0-Linux-x86_64.sh -O /tmp/miniconda.sh && \
    bash /tmp/miniconda.sh -b -p /opt/miniconda3 && \
    rm /tmp/miniconda.sh && \
    rm -rf /var/lib/apt/lists/*
